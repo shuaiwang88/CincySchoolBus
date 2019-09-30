@@ -1,4 +1,9 @@
-** 1.Routing: Bi-objective Routing Decomposition (BiRD)
+#+TITLE:    Cincinnati Public School Bus Routing and Bell Time Optimization 
+#+AUTHOR:     Shuai Wang 
+#+DATE:       09/28/2019 
+#+EMAIL: wang.172@wright.edu
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-bigblow.setup
+** Routing: Bi-objective Routing Decomposition (BiRD)
    :PROPERTIES:
    :CUSTOM_ID: routing-bi-objective-routing-decomposition-bird
    :END:
@@ -15,7 +20,7 @@ Decomposing the routing problem:
    1. scenario selection
    2. bus scheduling
 
-*** 1.1 Stop Assignment
+*** Stop Assignment
     :PROPERTIES:
     :CUSTOM_ID: stop-assignment
     :END:
@@ -55,7 +60,7 @@ $y_{p,c}$: binary whether student p is assigned to stop c. 
      :CUSTOM_ID: objective-and-constraints
      :END:
 
-For each school S:
+For each school S, minimize the total number of stops and walking distance:
 
 $$ min \sum_{c \in C} z_c + \beta \sum_{p \in P_s} \sum_{c \in C_p} d_{p,c} y_{p,c}$$
 
@@ -70,35 +75,54 @@ subject to:
 Where $\beta$ is the trade-off of the total number of stops and walking
 distance.
 
-*** 1.2 single school routing
+*** Single school routing
     :PROPERTIES:
     :CUSTOM_ID: single-school-routing
     :END:
 
 After the stop assignment, $C_s$ is the set of bus stops which serve
-school S. $n_{c,S}$ is number of students from school S at a stop c.
+school S.
+
+$n_{c,S}$ is number of students from school S at a stop c.
 
 **** Bus
      :PROPERTIES:
      :CUSTOM_ID: bus
      :END:
 
-| Identifier               | index/set   | comment                            |
-|--------------------------+-------------+------------------------------------|
-| Bus Type                 | b/B         |                                    |
-| Capacity $Q_b$           | b           |                                    |
-| Wheelchair spots $W_b$   | b           | fixed number of wheelchair         |
-| Bus depot $Y$            |             | *stored during the night or day*   |
+     | Identifier             | index/set | comment                             |
+     |------------------------+-----------+-------------------------------------|
+     | Bus Type               | b/B       |                                     |
+     | Capacity $Q_b$         | b         |                                     |
+     | Wheelchair spots $W_b$ | b         | fixed number of wheelchair          |
+     | Bus depot $Y$          |           | *stored during the night or day???* |
 
 **** Trip
-     :PROPERTIES:
-     :CUSTOM_ID: trip
-     :END:
+***** Time
+     | Identifier                 | comment                                                                |
+     |----------------------------+------------------------------------------------------------------------|
+     | $t_{c,S}^{pick}$           | length of time to pick all p for S at c; function of $n_{c,S}$         |
+     | $t_{S}^{drop}$             | length of time to drop all p at school S; fixed                        |
+     | $t_{l_1,l_2,\tau}^{drive}$ | driving time from $l_1$ to  $l_2$ $\in S \cup C \cup Y$ at time $\tau$ |
+     | $\tau_S$                   | all buses must arrive at school S at $\tau_S$                          |
+     | $t_{S}^{drop}$ + $\tau_S$  | bus free to leave at this time                                         |
+     | $T^{max}$                  | maximum time that students allowed to spend on the bus                 |
 
-| Identifier         | index/set   | comment                                                         |
-|--------------------+-------------+-----------------------------------------------------------------|
-| $t_{c,S}^{pick}$   |             | length of time to pick all p for S at c; function of num of p   |
-| $t_{S}^{drop}$     |             | length of time to drop all p at school S; fixed                 |
+     $t_{l_1,l_2,\tau}^{drive}$ are deterministic and known, and usual got from API
+     such as Google Map. Due to reality, such as accident, and to mitigate the impact
+     of the traffic, the drop-off times $t_{S}^{drop}$ is artificially increase to
+     say 10-15 minutes even it only takes 3 minutes.
 
-For any two location $l_1, l_2 \in S \cup C \cup Y$, and a given a
-particular time of day \tau: $t_{l_1,l_2,\tau}^{drive}$
+***** Route
+      For school S, a feasible route:
+ 1. no student spends more than $T^{Max}$ between pickup and drop-off.
+ 2. there exists a type of bus with capacity and carry all students assigned to
+    the stops severed by the trip.
+
+Given a feasible route $R$:
+
+$B_R \subseteq B$: the set of types of buses that have the necessary capacity to serve the trip.
+
+$T_R$: service time of the trip, the time between arrival at the stop to the final school
+
+

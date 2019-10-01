@@ -1,7 +1,8 @@
-#+TITLE:    Cincinnati Public School Bus Routing and Bell Time Optimization 
-#+AUTHOR:     Shuai Wang 
-#+DATE:       09/28/2019 
+#+TITLE: Cincinnati Public School Bus Routing and Bell Time Optimization 
+#+AUTHOR: Shuai Wang 
+#+DATE:  09/28/2019 
 #+EMAIL: wang.172@wright.edu
+#+HTML_DOCTYPE: html5
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-bigblow.setup
 ** Routing: Bi-objective Routing Decomposition (BiRD)
    :PROPERTIES:
@@ -82,7 +83,6 @@ distance.
 
 After the stop assignment, $C_s$ is the set of bus stops which serve
 school S.
-
 $n_{c,S}$ is number of students from school S at a stop c.
 
 **** Bus
@@ -113,16 +113,47 @@ $n_{c,S}$ is number of students from school S at a stop c.
      of the traffic, the drop-off times $t_{S}^{drop}$ is artificially increase to
      say 10-15 minutes even it only takes 3 minutes.
 
-***** Route
-      For school S, a feasible route:
+***** Trip/Route
+      A trip/route is a ordered sequence of stops visited or served, by a bus. 
+      For school S, a feasible trip/route:
  1. no student spends more than $T^{Max}$ between pickup and drop-off.
  2. there exists a type of bus with capacity and carry all students assigned to
     the stops severed by the trip.
 
 Given a feasible route $R$:
 
-$B_R \subseteq B$: the set of types of buses that have the necessary capacity to serve the trip.
+- $B_R \subseteq B$: the set of types of buses that have the necessary capacity to serve the trip.
 
-$T_R$: service time of the trip, the time between arrival at the stop to the final school
+- $T_R$: service time of the trip, the time between arrival at the stop to the final school
+
+- $T_S$: A set of feasible trips, each stops $c \in C_s$ is served by a nonempty set of feasible trips $T_c \subset T_S$.
+
+Trips $T_S$ indexed by $1,...,m_S$.
+
+For given set of trips $T \subseteq T_S$: $I(T)$ is the subset of
+$\{1,...,m_S\}$ corresponding to trips in T.
+
+**** find best set of routes
+***** Variable
+      $r_i$: binary whether trip i is selected $ \forall i \in {1,...,m_S}$
+      
+***** Objective
+      $$ min \hspace{0.5cm} \lambda \sum_{i=1}^{m_S} r_i + \sum_{i=1}^{m_S} r_i \Theta_i $$
+     
+***** Constraints
+      every stop must be served by at least one trip. 
+     $$\sum_{i \in I(T_c)} r_i \ge 1, \forall c \in C_S$$ 
+    
+     where, for each trip $i$ in $T_s$, $\Theta_i = \sum_{p:c_p \in C_i}
+     \theta_p^{(i)}$, where $C_i$ reprents the list of stops served by the $i-th$ trip $i$,
+     
+     $\theta_p^{(i)}$ corresponds to tiem spent by student $p$ on the bus druing trip $i$.
+     
+     $\lambda$ controls the importance of the number of trips relative to the
+     total time students on the bus.
+
+     
 
 
+
+     

@@ -152,27 +152,5 @@ $\{1,...,m_S\}$ corresponding to trips in T.
      $\lambda$ controls the importance of the number of trips relative to the
      total time students on the bus.
 
- In the optimal solution above, some stops may be served by more than one trip. 
-     Set of trips $T_c^{opt} \subset T_S$ serving each such stop c. For each $
-     i\in I(T_c^{opt})$, we compute the improvement $\delta_i$ to the objective
-     that would be obtained by removing stop $c$ from trip $i$.
-    
-     
-     
-*** Scenario Selection 
-**** Variable
-     integer flow variables $f_i^j$ for each arc(i,j).
-
-**** Objective
-     Minimize the total number of buses corresponds to minimizing the total flow
-     out of the yard node y.
-$$ minimize \sum_{s \in S}\sum_{h=1}^{h_S}\sum_{R \in \mathcal{T}_S^h}f_y^{\rho_{S,h,R}}$$ 
-
-**** Constraints
-     1. flows along all arcs must be integral.
-
-     
-
-
 
      

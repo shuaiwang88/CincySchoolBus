@@ -126,12 +126,27 @@ Given a feasible route $R$:
 
 - $T_R$: service time of the trip, the time between arrival at the stop to the final school
 
-- $T_S$: A set of feasible trips, each stops $c \in C_s$ is served by a nonempty set of feasible trips $T_c \subset T_S$.
+- $T_S$: A set of feasible trips, each stops $c \in C_s$ is served by a nonempty 
+  set of feasible trips $T_c \subset T_S$.
 
-Trips $T_S$ indexed by $1,...,m_S$.
+  For example:
+  School S has 4 different sets of feasible trips, stop c4 can be served by two
+  differents trips 3 and 5, so $T_c = {3,5}$.
+  
+  The heuristic returns a set of trips T what covers each stop **exactly once**.
+  Then we run it N times to build a set of feasible trips where each stop is
+  covered by serveral trips. The heuristic returns N different solutions and
+  each stop will be covered by N different feasible trips.
+
+Trips in $T_S$ indexed by $1,...,m_S$.
 
 For given set of trips $T \subseteq T_S$: $I(T)$ is the subset of
 $\{1,...,m_S\}$ corresponding to trips in T.
+
+For example:
+School S has 4 different set of feasible trips, with 25 different trips in total.
+Stop c4 can be served by two differents trip 3 and 5, so $I(T_c) = I(T_4) = {3,5}
+\subset {1,...25}$
 
 **** find best set of routes
 ***** Variable
@@ -145,12 +160,43 @@ $\{1,...,m_S\}$ corresponding to trips in T.
      $$\sum_{i \in I(T_c)} r_i \ge 1, \forall c \in C_S$$ 
     
      where, for each trip $i$ in $T_s$, $\Theta_i = \sum_{p:c_p \in C_i}
-     \theta_p^{(i)}$, where $C_i$ reprents the list of stops served by the $i-th$ trip $i$,
+     \theta_p^{(i)}$, where $C_i$ reprents the list of stops served by the
+     $i-th$ trip $i$,
      
-     $\theta_p^{(i)}$ corresponds to tiem spent by student $p$ on the bus druing trip $i$.
+     $\theta_p^{(i)}$ corresponds to tiem spent by student $p$ on the bus druing
+     trip $i$.
      
      $\lambda$ controls the importance of the number of trips relative to the
      total time students on the bus.
+     
+     In the optimal solution above, some stops may be served by more than one trip. 
+     Set of trips $T_c^{opt} \subset T_S$ serving each such stop c. For each $
+     i\in I(T_c^{opt})$, we compute the improvement $\delta_i$ to the objective
+     that would be obtained by removing stop $c$ from trip $i$.
+     
+     
+ In the optimal solution above, some stops may be served by more than one trip. 
+     Set of trips $T_c^{opt} \subset T_S$ serving each such stop c. For each $
+     i\in I(T_c^{opt})$, we compute the improvement $\delta_i$ to the objective
+     that would be obtained by removing stop $c$ from trip $i$.
+    
+     
+*** Scenario Selection 
+**** Variable
+     integer flow variables $f_i^j$ for each arc(i,j).
+
+**** Objective
+     Minimize the total number of buses corresponds to minimizing the total flow
+     out of the yard node y.
+$$ minimize \sum_{s \in S}\sum_{h=1}^{h_S}\sum_{R \in \mathcal{T}_S^h}f_y^{\rho_{S,h,R}}$$ 
+
+**** Constraints
+     1. flows along all arcs must be integral.
+
+     
+     
+     
 
 
+     
      

@@ -3,7 +3,7 @@
 #+DATE:  09/28/2019 
 #+EMAIL: wang.172@wright.edu
 #+HTML_DOCTYPE: html5
-#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-bigblow.setup
+#+SETUPFILE: theme-bigblow.setup
 ** Routing: Bi-objective Routing Decomposition (BiRD)
    :PROPERTIES:
    :CUSTOM_ID: routing-bi-objective-routing-decomposition-bird
@@ -15,7 +15,7 @@ Decomposing the routing problem:
 
    1. stop assignment
    2. single-school routing
-
+     
 2. multi-school
 
    1. scenario selection
@@ -69,7 +69,7 @@ subject to:
 
 1. student p is assigned to c only if stop c is selected for school s.
    $$y_{p,c} \leq z_c,  \forall p \in P_s , c \in C_p$$
-
+   
 2. Each student is assigned to 1 stop
    $$\sum_{c \in C_p} y_{p,c} = 1 ,\forall p \in P_s $$
 
@@ -175,13 +175,30 @@ Stop c4 can be served by two differents trip 3 and 5, so $I(T_c) = I(T_4) = {3,5
      that would be obtained by removing stop $c$ from trip $i$.
      
      
- In the optimal solution above, some stops may be served by more than one trip. 
-     Set of trips $T_c^{opt} \subset T_S$ serving each such stop c. For each $
-     i\in I(T_c^{opt})$, we compute the improvement $\delta_i$ to the objective
-     that would be obtained by removing stop $c$ from trip $i$.
-    
+
+
+     
      
 *** Scenario Selection 
+
+**** Node:
+
+| Type           | Notation       | comment                                                                                         |
+|----------------+----------------+-------------------------------------------------------------------------------------------------|
+| depot          | y              |                                                                                                 |
+| trip           | $\rho_{S,h,R}$ | for each school S, and routing scenario $1 \le h \le h_S$ and each trip $R \in \mathcal{T}_S^h$ |
+| available node | $a_{S,h}$      | for each school S, and routing scenario $1 \le h \le h_S$                                       |
+
+The set of arcs includes an arc from depot to trip; trip to corresponding
+available node; from available node back to the depot.
+
+Also, an arc from each available node to each trip node where trip $R' \in
+\mathcal{T}_{S'}^{h'}$ is compatible with the a bus staring from school S.
+$\tau_S + t_S^{drop-off} + t_{S, c_{R'}^{start}, \tau_S}^{drive} + \mathcal{T}_R \le \tau_{S'}$
+
+For a note $i \in \mathcal{N}, let \hspace{0.1cm} \mathcal{I}{(i)} \subseteq \mathcal{N}$ be the
+in-neighborhood of the node i, and $\mathcal{O}{(i)} \subseteq \mathcal{N}$
+
 **** Variable
      integer flow variables $f_i^j$ for each arc(i,j).
 
@@ -192,11 +209,4 @@ $$ minimize \sum_{s \in S}\sum_{h=1}^{h_S}\sum_{R \in \mathcal{T}_S^h}f_y^{\rho_
 
 **** Constraints
      1. flows along all arcs must be integral.
-
-     
-     
-     
-
-
-     
-     
+     2. $\mathcal{Z}_{S,h} \in \{0,1\}, \forall S \in S, 1 \le h \le h_S$ 

@@ -1,9 +1,9 @@
-#+TITLE: Cincinnati Public School Bus Routing and Bell Time Optimization 
+# #+TITLE: Cincinnati Public School Bus Routing and Bell Time Optimization 
 #+AUTHOR: Shuai Wang 
 #+DATE:  09/28/2019 
 #+EMAIL: wang.172@wright.edu
-#+HTML_DOCTYPE: html5
 #+SETUPFILE: theme-bigblow.setup
+
 ** Routing: Bi-objective Routing Decomposition (BiRD)
    :PROPERTIES:
    :CUSTOM_ID: routing-bi-objective-routing-decomposition-bird
@@ -150,7 +150,7 @@ Stop c4 can be served by two differents trip 3 and 5, so $I(T_c) = I(T_4) = {3,5
 
 **** find best set of routes
 ***** Variable
-      $r_i$: binary whether trip i is selected $ \forall i \in {1,...,m_S}$
+      $r_i$: binary whether trip i is selected $\forall i \in \{1,...,m_S\}$
       
 ***** Objective
       $$ min \hspace{0.5cm} \lambda \sum_{i=1}^{m_S} r_i + \sum_{i=1}^{m_S} r_i \Theta_i $$
@@ -170,8 +170,8 @@ Stop c4 can be served by two differents trip 3 and 5, so $I(T_c) = I(T_4) = {3,5
      total time students on the bus.
      
      In the optimal solution above, some stops may be served by more than one trip. 
-     Set of trips $T_c^{opt} \subset T_S$ serving each such stop c. For each $
-     i\in I(T_c^{opt})$, we compute the improvement $\delta_i$ to the objective
+     Set of trips $T_c^{opt} \subset T_S$ serving each such stop c. For each
+     $i\in I(T_c^{opt})$, we compute the improvement $\delta_i$ to the objective
      that would be obtained by removing stop $c$ from trip $i$.
      
      
@@ -180,9 +180,9 @@ Stop c4 can be served by two differents trip 3 and 5, so $I(T_c) = I(T_4) = {3,5
      
      
 *** Scenario Selection 
-
-**** Node:
-
+    
+**** Node
+     
 | Type           | Notation       | comment                                                                                         |
 |----------------+----------------+-------------------------------------------------------------------------------------------------|
 | depot          | y              |                                                                                                 |
@@ -209,4 +209,9 @@ $$ minimize \sum_{s \in S}\sum_{h=1}^{h_S}\sum_{R \in \mathcal{T}_S^h}f_y^{\rho_
 
 **** Constraints
      1. flows along all arcs must be integral.
-     2. $\mathcal{Z}_{S,h} \in \{0,1\}, \forall S \in S, 1 \le h \le h_S$ 
+     2. $$\mathcal{Z}_{S,h} \in \{0,1\}, \forall S \in S, 1 \le h \le h_S$$
+     3. $$\sum_{h=1}^{h_S}Z_{S,h} = 1$$
+
+     The binary variable $Z_{S,h}$ is 1 if $\mathcal{T}_S^h$ is the selected set
+     of trips for school S. $3$. exactly one set of trips / one scenario is
+     selected for each school.

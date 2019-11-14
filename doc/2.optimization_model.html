@@ -1,0 +1,840 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-11-13 Wed 20:10 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cincinnati Public School Bus Routing and Bell Time Optimization</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Dr. Shuai Wang" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/bigblow/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/bigblow/css/bigblow.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/bigblow/css/hideshow.css"/>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/bigblow/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/bigblow/js/jquery-ui-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/bigblow/js/jquery.localscroll-min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/bigblow/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/bigblow/js/jquery.zclip.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/bigblow/js/bigblow.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/bigblow/js/hideshow.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Cincinnati Public School Bus Routing and Bell Time Optimization</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#routing-bi-objective-routing-decomposition-bird">1. Routing: Bi-objective Routing Decomposition (BiRD)</a>
+<ul>
+<li><a href="#stop-assignment">1.1. Stop Assignment</a>
+<ul>
+<li><a href="#setparameters">1.1.1. Set/Parameters</a></li>
+<li><a href="#variable">1.1.2. Variable</a></li>
+<li><a href="#objective-and-constraints">1.1.3. Objective and Constraints</a></li>
+</ul>
+</li>
+<li><a href="#single-school-routing">1.2. Single school routing</a>
+<ul>
+<li><a href="#bus">1.2.1. Bus</a></li>
+<li><a href="#org3c1317a">1.2.2. Trip</a></li>
+<li><a href="#org98d04a8">1.2.3. find best set of routes</a></li>
+</ul>
+</li>
+<li><a href="#org1a64e79">1.3. Scenario Selection</a>
+<ul>
+<li><a href="#org7561e29">1.3.1. Node</a></li>
+<li><a href="#org8194611">1.3.2. Arcs</a></li>
+<li><a href="#orgbedc97e">1.3.3. Variable</a></li>
+<li><a href="#orgd3d585a">1.3.4. Objective</a></li>
+<li><a href="#orge7e5a73">1.3.5. Constraints</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9cfe04a" class="outline-2">
+<h2 id="routing-bi-objective-routing-decomposition-bird"><span class="section-number-2">1</span> Routing: Bi-objective Routing Decomposition (BiRD)</h2>
+<div class="outline-text-2" id="text-routing-bi-objective-routing-decomposition-bird">
+<p>
+Decomposing the routing problem:
+</p>
+
+<ol class="org-ol">
+<li>single-school
+
+<ol class="org-ol">
+<li>stop assignment</li>
+<li>single-school routing</li>
+</ol></li>
+
+<li>multi-school
+
+<ol class="org-ol">
+<li>scenario selection</li>
+<li>bus scheduling</li>
+</ol></li>
+</ol>
+</div>
+
+<div id="outline-container-org39f8940" class="outline-3">
+<h3 id="stop-assignment"><span class="section-number-3">1.1</span> Stop Assignment</h3>
+<div class="outline-text-3" id="text-stop-assignment">
+</div>
+
+<div id="outline-container-org162176e" class="outline-4">
+<h4 id="setparameters"><span class="section-number-4">1.1.1</span> Set/Parameters</h4>
+<div class="outline-text-4" id="text-setparameters">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Identifier</th>
+<th scope="col" class="org-left">Index/Set Domain</th>
+<th scope="col" class="org-left">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">schools</td>
+<td class="org-left">S</td>
+<td class="org-left">set of schools</td>
+</tr>
+
+<tr>
+<td class="org-left">students</td>
+<td class="org-left">P</td>
+<td class="org-left">set of students</td>
+</tr>
+
+<tr>
+<td class="org-left">\(P_s\)</td>
+<td class="org-left">\(s \in S\)</td>
+<td class="org-left">set of students attending school s</td>
+</tr>
+
+<tr>
+<td class="org-left">Locations</td>
+<td class="org-left">C</td>
+<td class="org-left">set of all locations can serve as bus stops</td>
+</tr>
+
+<tr>
+<td class="org-left">\(C_p\)</td>
+<td class="org-left">\(C_p \subseteq C\)</td>
+<td class="org-left">Allowed bus stops for student \(p \in P_s\)</td>
+</tr>
+
+<tr>
+<td class="org-left">\(d_{p,c}\)</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">walking distance for student p to a stop \(c \in C_p\)</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+For student p with special needs may require a "door-to-door" pickup:
+the set \(C_p\) is a singleton \({c}\), where \(d_{p,c} = 0\).
+</p>
+
+<p>
+The objective is to minimize the number of stops for each schools and
+the total walking distance. This is similar to a facility location
+problem.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdd59d55" class="outline-4">
+<h4 id="variable"><span class="section-number-4">1.1.2</span> Variable</h4>
+<div class="outline-text-4" id="text-variable">
+<p>
+\(z_c\): binary whether stop c is selected for school S.
+</p>
+
+<p>
+\(y_{p,c}\): binary whether student p is assigned to stop c. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5768d11" class="outline-4">
+<h4 id="objective-and-constraints"><span class="section-number-4">1.1.3</span> Objective and Constraints</h4>
+<div class="outline-text-4" id="text-objective-and-constraints">
+<p>
+For each school S, minimize the total number of stops and walking distance:
+</p>
+
+<p>
+\[ min \sum_{c \in C} z_c + \beta \sum_{p \in P_s} \sum_{c \in C_p} d_{p,c} y_{p,c}\]
+</p>
+
+<p>
+subject to:
+</p>
+
+<ol class="org-ol">
+<li>student p is assigned to c only if stop c is selected for school s.
+\[y_{p,c} \leq z_c,  \forall p \in P_s , c \in C_p\]</li>
+
+<li>Each student is assigned to 1 stop
+\[\sum_{c \in C_p} y_{p,c} = 1 ,\forall p \in P_s \]</li>
+</ol>
+
+<p>
+Where \(\beta\) is the trade-off of the total number of stops and walking
+distance.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9b157c5" class="outline-3">
+<h3 id="single-school-routing"><span class="section-number-3">1.2</span> Single school routing</h3>
+<div class="outline-text-3" id="text-single-school-routing">
+<p>
+After the stop assignment, \(C_s\) is the set of bus stops which serve
+school S.
+\(n_{c,S}\) is number of students from school S at a stop c.
+</p>
+</div>
+
+<div id="outline-container-org0e2fe93" class="outline-4">
+<h4 id="bus"><span class="section-number-4">1.2.1</span> Bus</h4>
+<div class="outline-text-4" id="text-bus">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Identifier</th>
+<th scope="col" class="org-left">index/set</th>
+<th scope="col" class="org-left">comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Bus Type</td>
+<td class="org-left">b/B</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Capacity \(Q_b\)</td>
+<td class="org-left">b</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Wheelchair spots \(W_b\)</td>
+<td class="org-left">b</td>
+<td class="org-left">fixed number of wheelchair</td>
+</tr>
+
+<tr>
+<td class="org-left">Bus depot \(Y\)</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><b>stored during the night or day???</b></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org3c1317a" class="outline-4">
+<h4 id="org3c1317a"><span class="section-number-4">1.2.2</span> Trip</h4>
+<div class="outline-text-4" id="text-1-2-2">
+</div>
+<ol class="org-ol">
+<li><a id="org7891006"></a>Time<br />
+<div class="outline-text-5" id="text-1-2-2-1">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Identifier</th>
+<th scope="col" class="org-left">comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">\(t_{c,S}^{pick}\)</td>
+<td class="org-left">length of time to pick all p for S at c; function of \(n_{c,S}\)</td>
+</tr>
+
+<tr>
+<td class="org-left">\(t_{S}^{drop}\)</td>
+<td class="org-left">length of time to drop all p at school S; fixed</td>
+</tr>
+
+<tr>
+<td class="org-left">\(t_{l_1,l_2,\tau}^{drive}\)</td>
+<td class="org-left">driving time from \(l_1\) to  \(l_2\) \(\in S \cup C \cup Y\) at time \(\tau\)</td>
+</tr>
+
+<tr>
+<td class="org-left">\(\tau_S\)</td>
+<td class="org-left">all buses must arrive at school S at \(\tau_S\)</td>
+</tr>
+
+<tr>
+<td class="org-left">\(t_{S}^{drop}\) + \(\tau_S\)</td>
+<td class="org-left">bus free to leave at this time</td>
+</tr>
+
+<tr>
+<td class="org-left">\(T^{max}\)</td>
+<td class="org-left">maximum time that students allowed to spend on the bus</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+\(t_{l_1,l_2,\tau}^{drive}\) are deterministic and known, and usual got from API
+such as Google Map. Due to reality, such as accident, and to mitigate the impact
+of the traffic, the drop-off times \(t_{S}^{drop}\) is artificially increase to
+say 10-15 minutes even it only takes 3 minutes.
+</p>
+</div>
+</li>
+
+<li><a id="orgcd8265e"></a>Trip/Route<br />
+<div class="outline-text-5" id="text-1-2-2-2">
+<p>
+A trip/route is a ordered sequence of stops visited or served, by a bus. 
+For school S, a feasible trip/route:
+</p>
+<ol class="org-ol">
+<li>no student spends more than \(T^{Max}\) between pickup and drop-off.</li>
+<li>there exists a type of bus with capacity and carry all students assigned to
+the stops severed by the trip.</li>
+</ol>
+
+<p>
+Given a feasible route \(R\):
+</p>
+
+<ul class="org-ul">
+<li>\(B_R \subseteq B\): the set of types of buses that have the necessary capacity to serve the trip.</li>
+
+<li>\(T_R\): service time of the trip, the time between arrival at the stop to the final school</li>
+
+<li><p>
+\(T_S\): A set of feasible trips, each stops \(c \in C_s\) is served by a nonempty 
+set of feasible trips \(T_c \subset T_S\).
+</p>
+
+<p>
+For example:
+School S has 4 different sets of feasible trips, stop c4 can be served by two
+differents trips 3 and 5, so \(T_c = {3,5}\).
+</p>
+
+<p>
+The heuristic returns a set of trips T what covers each stop <b><b>exactly once</b></b>.
+Then we run it N times to build a set of feasible trips where each stop is
+covered by serveral trips. The heuristic returns N different solutions and
+each stop will be covered by N different feasible trips.
+</p></li>
+</ul>
+
+<p>
+Trips in \(T_S\) indexed by \(1,...,m_S\).
+</p>
+
+<p>
+For given set of trips \(T \subseteq T_S\): \(I(T)\) is the subset of
+\(\{1,...,m_S\}\) corresponding to trips in T.
+</p>
+
+<p>
+For example:
+School S has 4 different set of feasible trips, with 25 different trips in total.
+Stop c4 can be served by two differents trip 3 and 5, so \(I(T_c) = I(T_4) = {3,5}
+\subset {1,...25}\)
+</p>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org98d04a8" class="outline-4">
+<h4 id="org98d04a8"><span class="section-number-4">1.2.3</span> find best set of routes</h4>
+<div class="outline-text-4" id="text-1-2-3">
+</div>
+<ol class="org-ol">
+<li><a id="org6b14809"></a>Variable<br />
+<div class="outline-text-5" id="text-1-2-3-1">
+<p>
+\(r_i\): binary whether trip i is selected \(\forall i \in \{1,...,m_S\}\)
+</p>
+</div>
+</li>
+
+<li><a id="org4570699"></a>Objective<br />
+<div class="outline-text-5" id="text-1-2-3-2">
+<p>
+\[ min \hspace{0.5cm} \lambda \sum_{i=1}^{m_S} r_i + \sum_{i=1}^{m_S} r_i \Theta_i \]
+</p>
+</div>
+</li>
+
+<li><a id="org1409fbf"></a>Constraints<br />
+<div class="outline-text-5" id="text-1-2-3-3">
+<p>
+ every stop must be served by at least one trip. 
+\[\sum_{i \in I(T_c)} r_i \ge 1, \forall c \in C_S\] 
+</p>
+
+<p>
+where, for each trip \(i\) in \(T_s\), \(\Theta_i = \sum_{p:c_p \in C_i}
+     \theta_p^{(i)}\), where \(C_i\) reprents the list of stops served by the
+\(i-th\) trip \(i\),
+</p>
+
+<p>
+\(\theta_p^{(i)}\) corresponds to tiem spent by student \(p\) on the bus druing
+trip \(i\).
+</p>
+
+<p>
+\(\lambda\) controls the importance of the number of trips relative to the
+total time students on the bus.
+</p>
+
+<p>
+In the optimal solution above, some stops may be served by more than one trip. 
+Set of trips \(T_c^{opt} \subset T_S\) serving each such stop c. For each
+\(i\in I(T_c^{opt})\), we compute the improvement \(\delta_i\) to the objective
+that would be obtained by removing stop \(c\) from trip \(i\).
+</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+
+
+
+
+
+<div id="outline-container-org1a64e79" class="outline-3">
+<h3 id="org1a64e79"><span class="section-number-3">1.3</span> Scenario Selection</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+scenario selection graph with \(\mathcal\{{N,A\}}\) 
+where \(\mathcal{N}\) consists of nodes: 
+</p>
+</div>
+<div id="outline-container-org7561e29" class="outline-4">
+<h4 id="org7561e29"><span class="section-number-4">1.3.1</span> Node</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Type</th>
+<th scope="col" class="org-left">Notation</th>
+<th scope="col" class="org-left">comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">depot</td>
+<td class="org-left">y</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">trip</td>
+<td class="org-left">\(\rho_{S,h,R}\)</td>
+<td class="org-left">for each school S, and routing scenario \(1 \le h \le h_S\) and each trip \(R \in \mathcal{T}_S^h\)</td>
+</tr>
+
+<tr>
+<td class="org-left">available node</td>
+<td class="org-left">\(a_{S,h}\)</td>
+<td class="org-left">for each school S, and routing scenario \(1 \le h \le h_S\)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div id="outline-container-org8194611" class="outline-4">
+<h4 id="org8194611"><span class="section-number-4">1.3.2</span> Arcs</h4>
+<div class="outline-text-4" id="text-1-3-2">
+<p>
+The set of arcs <b><b>\(\mathcal{A}\)</b></b>  includes an arc from depot to trip; trip to corresponding
+available node; from available node back to the depot.
+</p>
+
+<p>
+Also, an arc from each available node to each trip node where trip \(R' \in
+  \mathcal{T}_{S'}^{h'}\) is compatible with the a bus staring from school S.
+\(\tau_S + t_S^{drop-off} + t_{S, c_{R'}^{start}, \tau_S}^{drive} + \mathcal{T}_R \le \tau_{S'}\)
+</p>
+
+<p>
+For a note \(i \in \mathcal{N}, let \hspace{0.1cm} \mathcal{I}{(i)} \subseteq \mathcal{N}\) be the
+in-neighborhood of the node i, and \(\mathcal{O}{(i)} \subseteq \mathcal{N}\)
+</p>
+</div>
+</div>
+<div id="outline-container-orgbedc97e" class="outline-4">
+<h4 id="orgbedc97e"><span class="section-number-4">1.3.3</span> Variable</h4>
+<div class="outline-text-4" id="text-1-3-3">
+<p>
+integer flow variables \(f_i^j\) for each arc(i,j).
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd3d585a" class="outline-4">
+<h4 id="orgd3d585a"><span class="section-number-4">1.3.4</span> Objective</h4>
+<div class="outline-text-4" id="text-1-3-4">
+<p>
+Minimize the total number of buses corresponds to minimizing the total flow
+out of the yard node y.
+\[ minimize \sum_{s \in S}\sum_{h=1}^{h_S}\sum_{R \in \mathcal{T}_S^h}f_y^{\rho_{S,h,R}}\] 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge7e5a73" class="outline-4">
+<h4 id="orge7e5a73"><span class="section-number-4">1.3.5</span> Constraints</h4>
+<div class="outline-text-4" id="text-1-3-5">
+<ol class="org-ol">
+<li>flows along all arcs must be integral.</li>
+<li>\[\mathcal{Z}_{S,h} \in \{0,1\}, \forall S \in S, 1 \le h \le h_S\]</li>
+<li>\[\sum_{h=1}^{h_S}Z_{S,h} = 1\]</li>
+<li>\[\sum_{i \in \mathcal{I}{(i)}}f_j^i  = \sum_{j \in \mathcal{O}{(i)}}f_i^j,
+         \forall i \in \mathcal{N}\]</li>
+</ol>
+
+<p>
+The binary variable \(Z_{S,h}\) is 1 if \(\mathcal{T}_S^h\) is the selected set
+of trips for school S.
+</p>
+
+
+<p>
+\(3\) exactly one set of trips / one scenario is
+selected for each school. 
+</p>
+
+<p>
+\(4\) ensures conservation of flow \(f_i^j\) at each node, 
+</p>
+<ul class="org-ul">
+<li>At the depot node \(y\), it means that buses leaving the depot must
+eventually come back.</li>
+<li>At a trip node \(\rho_{S,h,R}\)   ,it means that a bus serving trip ?? must then
+become available at school \(S\) at time \(\tau_S + t_S^{drop-off}\)</li>
+<li>At an availability node \(a_{S,h}\) , it means that a bus that is available at
+a school after serving a trip must either return to the yard or serve
+another trip.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 09/28/2019</p>
+<p class="author">Author: Dr. Shuai Wang</p>
+<p class="date">Created: 2019-11-13 Wed 20:10</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

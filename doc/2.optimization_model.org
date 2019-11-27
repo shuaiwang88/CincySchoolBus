@@ -202,7 +202,8 @@ Stop c4 can be served by two differents trip 3 and 5, so $I(T_c) = I(T_4) = {3,5
   For a note $i \in \mathcal{N}, let \hspace{0.1cm} \mathcal{I}{(i)} \subseteq \mathcal{N}$ be the
   in-neighborhood of the node i, and $\mathcal{O}{(i)} \subseteq \mathcal{N}$
 **** Variable
-     integer flow variables $f_i^j$ for each arc(i,j).
+    1. $f_i^j$: integer flow variables for each arc(i,j).
+    2. $\mathcal{Z}_{S,h}$: whether to select scenario h for school S or not
 
 **** Objective
      Minimize the total number of buses corresponds to minimizing the total flow
@@ -210,11 +211,13 @@ Stop c4 can be served by two differents trip 3 and 5, so $I(T_c) = I(T_4) = {3,5
 $$ minimize \sum_{s \in S}\sum_{h=1}^{h_S}\sum_{R \in \mathcal{T}_S^h}f_y^{\rho_{S,h,R}}$$ 
 
 **** Constraints
-     1. flows along all arcs must be integral.
+     flows along all arcs must be integral.
+     1. $$f_{a_{S,h}}^{\rho_{S,h,R} = z_{S,h}} S \in \mathcal{S}, 1\leq h \in h_s, R \in \mathcal{T}_h^S$$
      2. $$\mathcal{Z}_{S,h} \in \{0,1\}, \forall S \in S, 1 \le h \le h_S$$
-     3. $$\sum_{h=1}^{h_S}Z_{S,h} = 1$$
+     3. $$\sum_{h=1}^{h_S}Z_{S,h} = 1, \forall S \in \mathcal{S}$$
      4. $$\sum_{i \in \mathcal{I}{(i)}}f_j^i  = \sum_{j \in \mathcal{O}{(i)}}f_i^j,
          \forall i \in \mathcal{N}$$ 
+     5. $$f_{i,j} \in Z_+ $$
         
      The binary variable $Z_{S,h}$ is 1 if $\mathcal{T}_S^h$ is the selected set
      of trips for school S.
@@ -226,8 +229,17 @@ $$ minimize \sum_{s \in S}\sum_{h=1}^{h_S}\sum_{R \in \mathcal{T}_S^h}f_y^{\rho_
      $4$ ensures conservation of flow $f_i^j$ at each node, 
      * At the depot node $y$, it means that buses leaving the depot must
        eventually come back. 
-     * At a trip node $\rho_{S,h,R}$   ,it means that a bus serving trip ?? must then
+     * At a trip node $\rho_{S,h,R}$   ,it means that a bus serving trip $R$ must then
        become available at school $S$ at time $\tau_S + t_S^{drop-off}$
      * At an availability node $a_{S,h}$ , it means that a bus that is available at
        a school after serving a trip must either return to the yard or serve
        another trip.
+
+*** Bus Scheduling
+    To determine the final bus schedules given exactly one routing routing scenario for each school.
+    We define a "bus selection graph" ($\overline{\mathcal{N}}, \overline{\mathcal{A}}$), where the
+    set of nodes $\overline{\mathcal{N}}$ consists of: 
+    1. a node $y_{b,\mathcal{l}}$ for each bus type $b \in \mathcal{B}$ and each
+       pysical bus depot locations $\mathcal{l} \in \mathcal{L}$.
+    2.  
+       

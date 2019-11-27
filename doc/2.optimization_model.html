@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-11-13 Wed 20:10 -->
+<!-- 2019-11-24 Sun 14:08 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Cincinnati Public School Bus Routing and Bell Time Optimization</title>
@@ -292,26 +292,27 @@ for the JavaScript code in this tag.
 <li><a href="#single-school-routing">1.2. Single school routing</a>
 <ul>
 <li><a href="#bus">1.2.1. Bus</a></li>
-<li><a href="#org3c1317a">1.2.2. Trip</a></li>
-<li><a href="#org98d04a8">1.2.3. find best set of routes</a></li>
+<li><a href="#org9aad469">1.2.2. Trip</a></li>
+<li><a href="#org6d7196a">1.2.3. find best set of routes</a></li>
 </ul>
 </li>
-<li><a href="#org1a64e79">1.3. Scenario Selection</a>
+<li><a href="#org132ad70">1.3. Scenario Selection</a>
 <ul>
-<li><a href="#org7561e29">1.3.1. Node</a></li>
-<li><a href="#org8194611">1.3.2. Arcs</a></li>
-<li><a href="#orgbedc97e">1.3.3. Variable</a></li>
-<li><a href="#orgd3d585a">1.3.4. Objective</a></li>
-<li><a href="#orge7e5a73">1.3.5. Constraints</a></li>
+<li><a href="#org6b55546">1.3.1. Node</a></li>
+<li><a href="#orgab9937d">1.3.2. Arcs</a></li>
+<li><a href="#org08eb7a2">1.3.3. Variable</a></li>
+<li><a href="#orge81ffd2">1.3.4. Objective</a></li>
+<li><a href="#org2f8649d">1.3.5. Constraints</a></li>
 </ul>
 </li>
+<li><a href="#org9368eae">1.4. Bus Scheduling</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org9cfe04a" class="outline-2">
+<div id="outline-container-org2c07377" class="outline-2">
 <h2 id="routing-bi-objective-routing-decomposition-bird"><span class="section-number-2">1</span> Routing: Bi-objective Routing Decomposition (BiRD)</h2>
 <div class="outline-text-2" id="text-routing-bi-objective-routing-decomposition-bird">
 <p>
@@ -335,12 +336,12 @@ Decomposing the routing problem:
 </ol>
 </div>
 
-<div id="outline-container-org39f8940" class="outline-3">
+<div id="outline-container-org14f913c" class="outline-3">
 <h3 id="stop-assignment"><span class="section-number-3">1.1</span> Stop Assignment</h3>
 <div class="outline-text-3" id="text-stop-assignment">
 </div>
 
-<div id="outline-container-org162176e" class="outline-4">
+<div id="outline-container-org0cc511d" class="outline-4">
 <h4 id="setparameters"><span class="section-number-4">1.1.1</span> Set/Parameters</h4>
 <div class="outline-text-4" id="text-setparameters">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
@@ -412,7 +413,7 @@ problem.
 </div>
 </div>
 
-<div id="outline-container-orgdd59d55" class="outline-4">
+<div id="outline-container-org7c7c21f" class="outline-4">
 <h4 id="variable"><span class="section-number-4">1.1.2</span> Variable</h4>
 <div class="outline-text-4" id="text-variable">
 <p>
@@ -425,7 +426,7 @@ problem.
 </div>
 </div>
 
-<div id="outline-container-org5768d11" class="outline-4">
+<div id="outline-container-orgdcac92e" class="outline-4">
 <h4 id="objective-and-constraints"><span class="section-number-4">1.1.3</span> Objective and Constraints</h4>
 <div class="outline-text-4" id="text-objective-and-constraints">
 <p>
@@ -456,7 +457,7 @@ distance.
 </div>
 </div>
 
-<div id="outline-container-org9b157c5" class="outline-3">
+<div id="outline-container-orgacc86b4" class="outline-3">
 <h3 id="single-school-routing"><span class="section-number-3">1.2</span> Single school routing</h3>
 <div class="outline-text-3" id="text-single-school-routing">
 <p>
@@ -466,7 +467,7 @@ school S.
 </p>
 </div>
 
-<div id="outline-container-org0e2fe93" class="outline-4">
+<div id="outline-container-orgb2edcf7" class="outline-4">
 <h4 id="bus"><span class="section-number-4">1.2.1</span> Bus</h4>
 <div class="outline-text-4" id="text-bus">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
@@ -515,12 +516,12 @@ school S.
 </div>
 </div>
 
-<div id="outline-container-org3c1317a" class="outline-4">
-<h4 id="org3c1317a"><span class="section-number-4">1.2.2</span> Trip</h4>
+<div id="outline-container-org9aad469" class="outline-4">
+<h4 id="org9aad469"><span class="section-number-4">1.2.2</span> Trip</h4>
 <div class="outline-text-4" id="text-1-2-2">
 </div>
 <ol class="org-ol">
-<li><a id="org7891006"></a>Time<br />
+<li><a id="orgbd315b1"></a>Time<br />
 <div class="outline-text-5" id="text-1-2-2-1">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -578,7 +579,7 @@ say 10-15 minutes even it only takes 3 minutes.
 </div>
 </li>
 
-<li><a id="orgcd8265e"></a>Trip/Route<br />
+<li><a id="org5d5bf5d"></a>Trip/Route<br />
 <div class="outline-text-5" id="text-1-2-2-2">
 <p>
 A trip/route is a ordered sequence of stops visited or served, by a bus. 
@@ -638,12 +639,12 @@ Stop c4 can be served by two differents trip 3 and 5, so \(I(T_c) = I(T_4) = {3,
 </ol>
 </div>
 
-<div id="outline-container-org98d04a8" class="outline-4">
-<h4 id="org98d04a8"><span class="section-number-4">1.2.3</span> find best set of routes</h4>
+<div id="outline-container-org6d7196a" class="outline-4">
+<h4 id="org6d7196a"><span class="section-number-4">1.2.3</span> find best set of routes</h4>
 <div class="outline-text-4" id="text-1-2-3">
 </div>
 <ol class="org-ol">
-<li><a id="org6b14809"></a>Variable<br />
+<li><a id="org7c26135"></a>Variable<br />
 <div class="outline-text-5" id="text-1-2-3-1">
 <p>
 \(r_i\): binary whether trip i is selected \(\forall i \in \{1,...,m_S\}\)
@@ -651,7 +652,7 @@ Stop c4 can be served by two differents trip 3 and 5, so \(I(T_c) = I(T_4) = {3,
 </div>
 </li>
 
-<li><a id="org4570699"></a>Objective<br />
+<li><a id="org9d6ca51"></a>Objective<br />
 <div class="outline-text-5" id="text-1-2-3-2">
 <p>
 \[ min \hspace{0.5cm} \lambda \sum_{i=1}^{m_S} r_i + \sum_{i=1}^{m_S} r_i \Theta_i \]
@@ -659,7 +660,7 @@ Stop c4 can be served by two differents trip 3 and 5, so \(I(T_c) = I(T_4) = {3,
 </div>
 </li>
 
-<li><a id="org1409fbf"></a>Constraints<br />
+<li><a id="org7984494"></a>Constraints<br />
 <div class="outline-text-5" id="text-1-2-3-3">
 <p>
  every stop must be served by at least one trip. 
@@ -699,16 +700,16 @@ that would be obtained by removing stop \(c\) from trip \(i\).
 
 
 
-<div id="outline-container-org1a64e79" class="outline-3">
-<h3 id="org1a64e79"><span class="section-number-3">1.3</span> Scenario Selection</h3>
+<div id="outline-container-org132ad70" class="outline-3">
+<h3 id="org132ad70"><span class="section-number-3">1.3</span> Scenario Selection</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 scenario selection graph with \(\mathcal\{{N,A\}}\) 
 where \(\mathcal{N}\) consists of nodes: 
 </p>
 </div>
-<div id="outline-container-org7561e29" class="outline-4">
-<h4 id="org7561e29"><span class="section-number-4">1.3.1</span> Node</h4>
+<div id="outline-container-org6b55546" class="outline-4">
+<h4 id="org6b55546"><span class="section-number-4">1.3.1</span> Node</h4>
 <div class="outline-text-4" id="text-1-3-1">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -751,8 +752,8 @@ where \(\mathcal{N}\) consists of nodes:
 </div>
 
 
-<div id="outline-container-org8194611" class="outline-4">
-<h4 id="org8194611"><span class="section-number-4">1.3.2</span> Arcs</h4>
+<div id="outline-container-orgab9937d" class="outline-4">
+<h4 id="orgab9937d"><span class="section-number-4">1.3.2</span> Arcs</h4>
 <div class="outline-text-4" id="text-1-3-2">
 <p>
 The set of arcs <b><b>\(\mathcal{A}\)</b></b>  includes an arc from depot to trip; trip to corresponding
@@ -771,17 +772,18 @@ in-neighborhood of the node i, and \(\mathcal{O}{(i)} \subseteq \mathcal{N}\)
 </p>
 </div>
 </div>
-<div id="outline-container-orgbedc97e" class="outline-4">
-<h4 id="orgbedc97e"><span class="section-number-4">1.3.3</span> Variable</h4>
+<div id="outline-container-org08eb7a2" class="outline-4">
+<h4 id="org08eb7a2"><span class="section-number-4">1.3.3</span> Variable</h4>
 <div class="outline-text-4" id="text-1-3-3">
-<p>
-integer flow variables \(f_i^j\) for each arc(i,j).
-</p>
+<ol class="org-ol">
+<li>\(f_i^j\): integer flow variables for each arc(i,j).</li>
+<li>\(\mathcal{Z}_{S,h}\): whether to select scenario h for school S or not</li>
+</ol>
 </div>
 </div>
 
-<div id="outline-container-orgd3d585a" class="outline-4">
-<h4 id="orgd3d585a"><span class="section-number-4">1.3.4</span> Objective</h4>
+<div id="outline-container-orge81ffd2" class="outline-4">
+<h4 id="orge81ffd2"><span class="section-number-4">1.3.4</span> Objective</h4>
 <div class="outline-text-4" id="text-1-3-4">
 <p>
 Minimize the total number of buses corresponds to minimizing the total flow
@@ -791,15 +793,19 @@ out of the yard node y.
 </div>
 </div>
 
-<div id="outline-container-orge7e5a73" class="outline-4">
-<h4 id="orge7e5a73"><span class="section-number-4">1.3.5</span> Constraints</h4>
+<div id="outline-container-org2f8649d" class="outline-4">
+<h4 id="org2f8649d"><span class="section-number-4">1.3.5</span> Constraints</h4>
 <div class="outline-text-4" id="text-1-3-5">
+<p>
+flows along all arcs must be integral.
+</p>
 <ol class="org-ol">
-<li>flows along all arcs must be integral.</li>
+<li>\[f_{a_{S,h}}^{\rho_{S,h,R} = z_{S,h}} S \in \mathcal{S}, 1\leq h \in h_s, R \in \mathcal{T}_h^S\]</li>
 <li>\[\mathcal{Z}_{S,h} \in \{0,1\}, \forall S \in S, 1 \le h \le h_S\]</li>
-<li>\[\sum_{h=1}^{h_S}Z_{S,h} = 1\]</li>
+<li>\[\sum_{h=1}^{h_S}Z_{S,h} = 1, \forall S \in \mathcal{S}\]</li>
 <li>\[\sum_{i \in \mathcal{I}{(i)}}f_j^i  = \sum_{j \in \mathcal{O}{(i)}}f_i^j,
          \forall i \in \mathcal{N}\]</li>
+<li>\[f_{i,j} \in Z_+ \]</li>
 </ol>
 
 <p>
@@ -819,7 +825,7 @@ selected for each school.
 <ul class="org-ul">
 <li>At the depot node \(y\), it means that buses leaving the depot must
 eventually come back.</li>
-<li>At a trip node \(\rho_{S,h,R}\)   ,it means that a bus serving trip ?? must then
+<li>At a trip node \(\rho_{S,h,R}\)   ,it means that a bus serving trip \(R\) must then
 become available at school \(S\) at time \(\tau_S + t_S^{drop-off}\)</li>
 <li>At an availability node \(a_{S,h}\) , it means that a bus that is available at
 a school after serving a trip must either return to the yard or serve
@@ -828,12 +834,27 @@ another trip.</li>
 </div>
 </div>
 </div>
+
+<div id="outline-container-org9368eae" class="outline-3">
+<h3 id="org9368eae"><span class="section-number-3">1.4</span> Bus Scheduling</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+To determine the final bus schedules given exactly one routing routing scenario for each school.
+We define a "bus selection graph" (\(\overline{\mathcal{N}}, \overline{\mathcal{A}}\)), where the
+set of nodes \(\overline{\mathcal{N}}\) consists of: 
+</p>
+<ol class="org-ol">
+<li>a node \(y_{b,\mathcal{l}}\) for each bus type \(b \in \mathcal{B}\) and each
+pysical bus depot locations \(\mathcal{l} \in \mathcal{L}\)</li>
+</ol>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 09/28/2019</p>
 <p class="author">Author: Dr. Shuai Wang</p>
-<p class="date">Created: 2019-11-13 Wed 20:10</p>
+<p class="date">Created: 2019-11-24 Sun 14:08</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

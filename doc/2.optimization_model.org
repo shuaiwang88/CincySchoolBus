@@ -2,7 +2,7 @@
 #+AUTHOR: Dr. Shuai Wang 
 #+DATE:  09/28/2019 
 #+EMAIL: wang.172@wright.edu
-#+SETUPFILE:  https://fniessen.github.io/org-html-themes/setup/theme-bigblow.setup
+##+SETUPFILE:  https://fniessen.github.io/org-html-themes/setup/theme-bigblow.setup
 
 ** Routing: Bi-objective Routing Decomposition (BiRD)
    :PROPERTIES:
@@ -243,3 +243,24 @@ $$ minimize \sum_{s \in S}\sum_{h=1}^{h_S}\sum_{R \in \mathcal{T}_S^h}f_y^{\rho_
        pysical bus depot locations $\mathcal{l} \in \mathcal{L}$.
     2.  
        
+
+
+* Overview
+** For single school:
+We first assign the stops, which optimize the number of stops for each school and the total student walking distance.
+This is similar to a facility location problem. 
+
+Single school routing:
+
+1. Generate a set of single feasible trip using randomized greedy heuristic, makeing sure each stop is served by a nonempty set of feasible trips.(func: greedy)
+2. Run the heuristic N times, so that each stop is covered by N different feasible trips. (func: generateRoutes) 
+3. Find the best sub set of trips that covers each stop, by using a minimum cover problem. Some stops may be servered by more than one trip. (func: bestRoutes)
+4. Trim the stops covered with multiple trips. (func: buildSolution)
+
+The output of single school routing is set of trips that covers every stop excatly once for each school.
+
+For each school, we end up with a set of routing scenarios, where each scenario is a complete set of trips that covers every stop exactly once. 
+** Multiple schools:
+Scenario selection:
+The input is a set of scenarios Rs of a size hs for each school S. Because what is optimzal for one school may not be optimal for the entire system.
+The goal is to jointly select one scenario for each school in a way that minimized the objective acroos the whole district. 

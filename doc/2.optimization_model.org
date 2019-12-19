@@ -1,9 +1,9 @@
 #+TITLE: Cincinnati Public School Bus Routing and Bell Time Optimization 
-#+AUTHOR: Shuai Wang 
+#+AUTHOR: Dr. Shuai Wang 
 #+DATE:  09/28/2019 
 #+EMAIL: wang.172@wright.edu
-#+HTML_DOCTYPE: html5
-#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-bigblow.setup
+##+SETUPFILE:  https://fniessen.github.io/org-html-themes/setup/theme-bigblow.setup
+
 ** Routing: Bi-objective Routing Decomposition (BiRD)
    :PROPERTIES:
    :CUSTOM_ID: routing-bi-objective-routing-decomposition-bird
@@ -15,7 +15,7 @@ Decomposing the routing problem:
 
    1. stop assignment
    2. single-school routing
-
+     
 2. multi-school
 
    1. scenario selection
@@ -69,7 +69,7 @@ subject to:
 
 1. student p is assigned to c only if stop c is selected for school s.
    $$y_{p,c} \leq z_c,  \forall p \in P_s , c \in C_p$$
-
+   
 2. Each student is assigned to 1 stop
    $$\sum_{c \in C_p} y_{p,c} = 1 ,\forall p \in P_s $$
 
@@ -150,7 +150,7 @@ Stop c4 can be served by two differents trip 3 and 5, so $I(T_c) = I(T_4) = {3,5
 
 **** find best set of routes
 ***** Variable
-      $r_i$: binary whether trip i is selected $ \forall i \in {1,...,m_S}$
+      $r_i$: binary whether trip i is selected $\forall i \in \{1,...,m_S\}$
       
 ***** Objective
       $$ min \hspace{0.5cm} \lambda \sum_{i=1}^{m_S} r_i + \sum_{i=1}^{m_S} r_i \Theta_i $$
@@ -170,20 +170,40 @@ Stop c4 can be served by two differents trip 3 and 5, so $I(T_c) = I(T_4) = {3,5
      total time students on the bus.
      
      In the optimal solution above, some stops may be served by more than one trip. 
-     Set of trips $T_c^{opt} \subset T_S$ serving each such stop c. For each $
-     i\in I(T_c^{opt})$, we compute the improvement $\delta_i$ to the objective
+     Set of trips $T_c^{opt} \subset T_S$ serving each such stop c. For each
+     $i\in I(T_c^{opt})$, we compute the improvement $\delta_i$ to the objective
      that would be obtained by removing stop $c$ from trip $i$.
      
      
- In the optimal solution above, some stops may be served by more than one trip. 
-     Set of trips $T_c^{opt} \subset T_S$ serving each such stop c. For each $
-     i\in I(T_c^{opt})$, we compute the improvement $\delta_i$ to the objective
-     that would be obtained by removing stop $c$ from trip $i$.
-    
+
+
+     
      
 *** Scenario Selection 
+   scenario selection graph with $\mathcal\{{N,A\}}$ 
+   where $\mathcal{N}$ consists of nodes: 
+**** Node
+     
+| Type           | Notation       | comment                                                                                         |
+|----------------+----------------+-------------------------------------------------------------------------------------------------|
+| depot          | y              |                                                                                                 |
+| trip           | $\rho_{S,h,R}$ | for each school S, and routing scenario $1 \le h \le h_S$ and each trip $R \in \mathcal{T}_S^h$ |
+| available node | $a_{S,h}$      | for each school S, and routing scenario $1 \le h \le h_S$                                       |
+
+
+**** Arcs
+  The set of arcs **$\mathcal{A}$**  includes an arc from depot to trip; trip to corresponding
+  available node; from available node back to the depot.
+
+  Also, an arc from each available node to each trip node where trip $R' \in
+  \mathcal{T}_{S'}^{h'}$ is compatible with the a bus staring from school S.
+  $\tau_S + t_S^{drop-off} + t_{S, c_{R'}^{start}, \tau_S}^{drive} + \mathcal{T}_R \le \tau_{S'}$
+
+  For a note $i \in \mathcal{N}, let \hspace{0.1cm} \mathcal{I}{(i)} \subseteq \mathcal{N}$ be the
+  in-neighborhood of the node i, and $\mathcal{O}{(i)} \subseteq \mathcal{N}$
 **** Variable
-     integer flow variables $f_i^j$ for each arc(i,j).
+    1. $f_i^j$: integer flow variables for each arc(i,j).
+    2. $\mathcal{Z}_{S,h}$: whether to select scenario h for school S or not
 
 **** Objective
      Minimize the total number of buses corresponds to minimizing the total flow
@@ -191,12 +211,56 @@ Stop c4 can be served by two differents trip 3 and 5, so $I(T_c) = I(T_4) = {3,5
 $$ minimize \sum_{s \in S}\sum_{h=1}^{h_S}\sum_{R \in \mathcal{T}_S^h}f_y^{\rho_{S,h,R}}$$ 
 
 **** Constraints
-     1. flows along all arcs must be integral.
+     flows along all arcs must be integral.
+     1. $$f_{a_{S,h}}^{\rho_{S,h,R} = z_{S,h}} S \in \mathcal{S}, 1\leq h \in h_s, R \in \mathcal{T}_h^S$$
+     2. $$\mathcal{Z}_{S,h} \in \{0,1\}, \forall S \in S, 1 \le h \le h_S$$
+     3. $$\sum_{h=1}^{h_S}Z_{S,h} = 1, \forall S \in \mathcal{S}$$
+     4. $$\sum_{i \in \mathcal{I}{(i)}}f_j^i  = \sum_{j \in \mathcal{O}{(i)}}f_i^j,
+         \forall i \in \mathcal{N}$$ 
+     5. $$f_{i,j} \in Z_+ $$
+        
+     The binary variable $Z_{S,h}$ is 1 if $\mathcal{T}_S^h$ is the selected set
+     of trips for school S.
+    
+ 
+     $3$ exactly one set of trips / one scenario is
+     selected for each school. 
+     
+     $4$ ensures conservation of flow $f_i^j$ at each node, 
+     * At the depot node $y$, it means that buses leaving the depot must
+       eventually come back. 
+     * At a trip node $\rho_{S,h,R}$   ,it means that a bus serving trip $R$ must then
+       become available at school $S$ at time $\tau_S + t_S^{drop-off}$
+     * At an availability node $a_{S,h}$ , it means that a bus that is available at
+       a school after serving a trip must either return to the yard or serve
+       another trip.
 
-     
-     
-     
+*** Bus Scheduling
+    To determine the final bus schedules given exactly one routing routing scenario for each school.
+    We define a "bus selection graph" ($\overline{\mathcal{N}}, \overline{\mathcal{A}}$), where the
+    set of nodes $\overline{\mathcal{N}}$ consists of: 
+    1. a node $y_{b,\mathcal{l}}$ for each bus type $b \in \mathcal{B}$ and each
+       pysical bus depot locations $\mathcal{l} \in \mathcal{L}$.
+    2.  
+       
 
 
-     
-     
+* Overview
+** For single school:
+We first assign the stops, which optimize the number of stops for each school and the total student walking distance.
+This is similar to a facility location problem. 
+
+Single school routing:
+
+1. Generate a set of single feasible trip using randomized greedy heuristic, makeing sure each stop is served by a nonempty set of feasible trips.(func: greedy)
+2. Run the heuristic N times, so that each stop is covered by N different feasible trips. (func: generateRoutes) 
+3. Find the best sub set of trips that covers each stop, by using a minimum cover problem. Some stops may be servered by more than one trip. (func: bestRoutes)
+4. Trim the stops covered with multiple trips. (func: buildSolution)
+
+The output of single school routing is set of trips that covers every stop excatly once for each school.
+
+For each school, we end up with a set of routing scenarios, where each scenario is a complete set of trips that covers every stop exactly once. 
+** Multiple schools:
+Scenario selection:
+The input is a set of scenarios Rs of a size hs for each school S. Because what is optimzal for one school may not be optimal for the entire system.
+The goal is to jointly select one scenario for each school in a way that minimized the objective acroos the whole district. 

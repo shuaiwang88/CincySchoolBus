@@ -132,10 +132,10 @@ $$ min \sum_{c \in C} z_c + \beta \sum_{p \in P_s} \sum_{c \in C_p} d_{p,c} y_{p
 subject to:
 
 1. student p is assigned to c only if stop c is selected for school s.
-   $$y_{p,c} \leq z_c,  \forall p \in P_s , c \in C_p$$
+   $$y_{p,c} \leq z_c,\quad  \forall p \in P_s , c \in C_p$$
    
 2. Each student is assigned to 1 stop
-   $$\sum_{c \in C_p} y_{p,c} = 1 ,\forall p \in P_s $$
+   $$\sum_{c \in C_p} y_{p,c} = 1 ,\quad \forall p \in P_s $$
 
 Where $\beta$ is the trade-off of the total number of stops and walking
 distance.
@@ -221,7 +221,7 @@ Stop c4 can be served by two differents trip 3 and 5, so $I(T_c) = I(T_4) = {3,5
      
 **** Constraints
       every stop must be served by at least one trip. 
-     $$\sum_{i \in I(T_c)} r_i \ge 1, \forall c \in C_S$$ 
+     $$\sum_{i \in I(T_c)} r_i \ge 1, \quad \forall c \in C_S$$ 
     
      where, for each trip $i$ in $T_s$, $\Theta_i = \sum_{p:c_p \in C_i}
      \theta_p^{(i)}$, where $C_i$ reprents the list of stops served by the
@@ -273,38 +273,4 @@ Stop c4 can be served by two differents trip 3 and 5, so $I(T_c) = I(T_4) = {3,5
      out of the yard node y.
 $$ minimize \sum_{s \in S}\sum_{h=1}^{h_S}\sum_{R \in \mathcal{T}_S^h}f_y^{\rho_{S,h,R}}$$ 
 
-*** Constraints
-     flows along all arcs must be integral.
-     1. $$f_{a_{S,h}}^{\rho_{S,h,R}}= z_{S,h},  S \in \mathcal{S}, 1\leq h \in h_s, R \in \mathcal{T}_h^S$$
-     2. $$\mathcal{Z}_{S,h} \in \{0,1\}, \forall S \in S, 1 \le h \le h_S$$
-     3. $$\sum_{h=1}^{h_S}Z_{S,h} = 1, \forall S \in \mathcal{S}$$
-     4. $$\sum_{i \in \mathcal{I}{(i)}}f_j^i  = \sum_{j \in \mathcal{O}{(i)}}f_i^j,
-         \forall i \in \mathcal{N}$$ 
-     5. $$f_{i,j} \in \mathbb{Z}_+ \forall (i,j) \in \mathcal{A} $$
-        
-     The binary variable $Z_{S,h}$ is 1 if $\mathcal{T}_S^h$ is the selected set
-     of trips for school S.
-    
- 
-     $3$ exactly one set of trips/one scenario is
-     selected for each school. 
-     
-     $4$ ensures conservation of flow $f_i^j$ at each node, 
-     * At the depot node $y$, it means that buses leaving the depot must
-       eventually come back. 
-     * At a trip node $\rho_{S,h,R}$, it means that a bus serving trip $R$ must then
-       become available at school $S$ at time $\tau_S + t_S^{drop-off}$
-     * At an availability node $a_{S,h}$ , it means that a bus that is available at
-       a school after serving a trip must either return to the yard or serve
-       another trip.
 
-** Bus Scheduling
-    To determine the final bus schedules given exactly one routing routing scenario for each school.
-    We define a "bus selection graph" ($\overline{\mathcal{N}}, \overline{\mathcal{A}}$), where the
-    set of nodes $\overline{\mathcal{N}}$ consists of: 
-    1. a node $y_{b,\mathcal{l}}$ for each bus type $b \in \mathcal{B}$ and each
-       pysical bus depot locations $\mathcal{l} \in \mathcal{L}$.
-    2.  
-       
-
-    

@@ -334,3 +334,4 @@ $$ minimize   \quad \gamma \sum_{b \in \mathcal{B}} \sum_{l \in \mathcal{L}}c_b 
 
  3. $$\sum_{i \in \mathcal{O^{q(y_{b,l})}}} f_y{b,l}^i \leq K_{b,l}, \quad \forall b \in
      \mathcal{B}, l \in \mathcal{L}, q \in {\{AM, PM\}}$$
+
